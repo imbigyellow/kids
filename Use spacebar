@@ -1,0 +1,35 @@
+// ==UserScript==
+// @name         Spacebar as Left Click for Kids A-Z
+// @namespace    http://tampermonkey.net/
+// @version      0.1
+// @description  Use spacebar to simulate a left-click anywhere on Kids A-Z platform without preventing scroll
+// @author       You
+// @match        *://*kidsa-z.com/*
+// @grant        none
+// ==/UserScript==
+
+(function() {
+    'use strict';
+    document.addEventListener('keydown', function(e) {
+        if (e.code === "Space") {
+            simulateLeftClickAtCursor();
+        }
+    });
+
+    function simulateLeftClickAtCursor() {
+        var clickEvent = new MouseEvent('click', {
+            bubbles: true,
+            cancelable: true,
+            view: window,
+            button: 0  // Left button is represented by 0
+        });
+        if (document.elementFromPoint(window.mouseX, window.mouseY)) {
+            document.elementFromPoint(window.mouseX, window.mouseY).dispatchEvent(clickEvent);
+        }
+    }
+
+    document.addEventListener('mousemove', function(e) {
+        window.mouseX = e.clientX;
+        window.mouseY = e.clientY;
+    });
+})();
