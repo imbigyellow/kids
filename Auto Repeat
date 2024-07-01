@@ -1,0 +1,33 @@
+// ==UserScript==
+// @name         Auto Repeat Kids A-Z
+// @namespace    http://tampermonkey.net/
+// @version      0.1
+// @description  Automatically repeat Kids A-Z articles by clicking the replay button after completion
+// @author       You
+// @match        *://*kidsa-z.com/*
+// @grant        none
+// ==/UserScript==
+
+(function() {
+    'use strict';
+
+    function checkAndReplay() {
+        // Check if the completion message is displayed
+        var completionMessage = document.querySelector('.redesignedReward_instructionText');
+        if (completionMessage && completionMessage.innerText.includes("You've done this activity before")) {
+            console.log("Completion message detected.");
+            var replayButton = document.querySelector('span.activity_icon.activity_icon-lg.icon.icon-listenC');
+            if (replayButton) {
+                console.log("Replay button found. Clicking to replay...");
+                replayButton.click();
+            } else {
+                console.log("Replay button not found.");
+            }
+        } else {
+            console.log("Completion message not found.");
+        }
+    }
+
+    // Check for the completion message periodically
+    setInterval(checkAndReplay, 3000);
+})();
